@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ligne de vie</title>
+	<meta charset="utf-8" />
+	
+	<meta name="description" content="Test de recherche de POI autour des gares d'Île-de-France"/>
+	<link rel="canonical" href="http://www.aureliesurlocean.fr/test/lignes" />
+	<meta property="og:title" content="Votre ligne de vie" />
+	<meta property="og:description" content="Test de recherche de POI autour des gares d'Île-de-France" />
+	<meta property="og:url" content="http://www.aureliesurlocean.fr/test/lignes" />
+	<meta property="og:site_name" content="Ligne de vie" />
+	<meta property="og:image" content="xxx" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <script src="js/leaflet.js"></script>
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<!-- Librairies externes -->
+	<script src="js/SliderControl.js"></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-hash/v0.2.1/leaflet-hash.js'></script>
+    <link rel="stylesheet" href="css/leaflet.modal.min.css" />
+    <script type="text/javascript" src="js/Leaflet.Modal.min.js"></script>
+<!-- Jolis Marqueurs -->
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/leaflet.awesome-markers.css">
+	<script src="js/leaflet.awesome-markers.js"></script>    
+<!-- Include the loading control -->
+    <link rel="stylesheet" href="css/Control.Loading.css" />
+    <script src="js/Control.Loading.js"></script>
+    <script type="text/javascript" src="js/c.geojson"></script>  
+    <script src="js/leaflet.geometryutil.js"></script>
+
+    <style>
+		body {
+			padding: 0;
+			margin: 0;
+		}
+		html, body, #map {
+			height: 100%;
+		}
+    </style>
+
+
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <script>
+
+/**
+ * This is a method of the L.Polygon object which returns the position of the 
+ * "middle" of the polygon.
+ * The returned position might not be inside the polygon.
+ * @return latlng coordonates of the position.  
+ */
+        L.Polygon.prototype.getCenter = function() {
+            var pts = this._latlngs;
+            var off = pts[0];
+            var twicearea = 0;
+            var x = 0;
+            var y = 0;
+            var nPts = pts.length;
+            var p1, p2;
+            var f;
+            for (var i = 0, j = nPts - 1; i < nPts; j = i++) {
+                p1 = pts[i];
+                p2 = pts[j];
+                f = (p1.lat - off.lat) * (p2.lng - off.lng) - (p2.lat - off.lat) * (p1.lng - off.lng);
+                twicearea += f;
+                x += (p1.lat + p2.lat - 2 * off.lat) * f;
+                y += (p1.lng + p2.lng - 2 * off.lng) * f;
+            }
+            f = twicearea * 3;
+            return new L.LatLng(
+                x / f + off.lat,
+                y / f + off.lng
+            );
+        }
+
+/**
+ * Instance of "i" control which show some informations.
+ */ 
+        var informationControl = L.Control.extend({
+            options: {
+                position: 'topright' 
+                //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+                container.style.backgroundColor = 'white';
+                container.style.backgroundImage = "url(images/information.png)";
+                container.style.backgroundSize = "30px 30px";
+                container.style.width = '30px';
+                container.style.height = '30px';
+                
+                container.onclick = function(e) {
+
+                    console.log('buttonClicked');
+                    console.log(e);
+                    console.log(map);
+                    map.fire('modal', {
+                        content: '                                              \
+<h1>Votre ligne de vie</h1>                                        \
+                                                                                \
+<img src="xxx" alt="Ligne de Vie"                   \
+style="float:right"/>                                                           \
+                                                                                \
+<p>Cherchez des services et équipements autour de vos gares et lignes de        \
+transport en commun préférées.                                                  \
+                                                                                \
+<p>Piscine, crèches, etc. Cherchez et trouvez des services sur votre trajet     \
+habituel. N\'utilise que les objets cartographié dans <a href="http://www.openstreetmap.org">OpenStreetMap</a>.</p> \
+                                                                                \
+<p>Ce projet est encore en test et évoluera en fonction des retours et de mon temps\
+',
+						closeTitle: 'fermer'
+                    });
+                };
+                return container;
+            }
+        });    
+/**
+ * Icones et layer.
+ */
+	L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa'; 
+	var layers = [{
+			title: "Piscines à 800m d'une gare ligne C",
+			request:'"sport"="swimming"',
+			ligne:'"C"',
+			group: L.featureGroup(), 
+			icon: L.AwesomeMarkers.icon({
+                icon: 'life-ring',
+				markerColor: 'blue'
+			})
+		}, {
+			title: "Tennis à 800m d'une gare ligne C",
+			request:'"sport"~"tennis"',
+			ligne:'"C"',
+			group: L.featureGroup(), 
+			icon: L.AwesomeMarkers.icon({
+                icon: 'circle',
+				markerColor: 'green'
+			})
+		}, {
+			title: "Creche à 800m d'une gare ligne C",
+			request:'"amenity"~"kindergarten|childcare"',
+			ligne:'"C"',
+			group: L.featureGroup(), 
+			icon: L.AwesomeMarkers.icon({
+                icon: 'child',
+				markerColor: 'red'
+			})
+		}];
+
+
+/**
+ * Open a popup composed using the event & the this instance.
+ * @param event The event which has been fired.
+ **/  
+        function onClick(event) {
+            var t ='<H3>' + this.tags.name + '</H3>';
+			t += (this.type == "node" ? "Node" : "Way") + 
+                    ' <a href="http://www.openstreetmap.org/' + this.type + 
+                    '/' + this.id + '" target="_blank">#' + this.id + 
+                    "</a> with tags:<ul>";
+            for(var key in this.tags) {
+                if (this.tags.hasOwnProperty(key)) {
+                    t += "<li>" + key + " = '" + this.tags[key] + "'</li>";
+                }
+            };
+            t += "</ul>";
+            map.openPopup(t, event.latlng);
+        };
+/**
+ * Ajoute les lignes Transilien.
+ */ 		
+/**
+ * Compute and update the icons' layer.
+ */ 
+        function askForPlots() {
+            
+            var zoom = map.getZoom();
+            var bounds = map.getBounds();
+            var minll = bounds.getSouthWest();
+            var maxll = bounds.getNorthEast();
+            var bbox = minll.lat + ',' + minll.lng + ',' + maxll.lat + ',' + maxll.lng;
+
+            layers.forEach(function(layer){
+                if (!map.hasLayer(layer.group)) return;
+                
+                map.fireEvent('dataloading'); 
+
+                var url = "http://overpass-api.de/api/interpreter?data=[out:json];area(3600008649)->.searchArea;";
+				var urla = "rel[\"line:SNCF\"~" + layer.ligne +"](area.searchArea);";
+                if (typeof layer.request == "object") {
+                    layer.request.forEach(function(req){
+                    url += urla + "node(around:800)[" + req + "](area.searchArea);out qt;";
+					url += urla + "way(around:800)[" + req + "](area.searchArea);";
+                    });
+                } else {
+                    url += urla + "node(around:800)[" + layer.request + "](area.searchArea);out qt;";
+					url += urla + "way(around:800)[" + layer.request + "](area.searchArea);";
+                }
+                url += "out center qt;";
+                          
+                $.getJSON(url, function(feature){
+                    var nodes = [];
+                    var ways = [];
+                    var markers = [];
+                    layer.group.clearLayers();
+                    
+                    feature.elements.forEach(function( elem ) {
+                        switch (elem.type) {
+                            case 'node':
+                                nodes[elem.id] = L.latLng(elem.lat, elem.lon);
+                                if ('tags' in elem) {
+                                    layer.group.addLayer(L.marker(L.latLng(elem.lat, elem.lon), {
+                                        icon: layer.icon
+                                    }).on('click', onClick, elem));
+                                }
+                                break;
+                            case 'way':
+								ways[elem.id] = L.latLng(elem.center.lat, elem.center.lon);
+                                if ('tags' in elem) {
+                                    layer.group.addLayer(L.marker(L.latLng(elem.center.lat, elem.center.lon), {
+                                        icon: layer.icon
+                                    }).on('click', onClick, elem));
+                                }
+                                break;
+                            default:
+                                console.log('type error');
+                        }
+                    });
+                    map.fireEvent('dataload'); 
+                });            
+            });
+        };
+
+
+
+
+
+
+/*
+/// @see http://taginfo.openstreetmap.org/keys/?key=hazard#values
+
+/*
+   		var mapboxLayer = L.tileLayer('//{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			id: 'examples.map-i875mjb7'
+		});
+*/
+var lignes = {
+    "color": lignec.properties.ligne_couleur,
+    "weight": 6,
+    "opacity": 0.9,
+};
+
+var Thunderforest_Transport = L.tileLayer('http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', {
+	attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	maxZoom: 19
+});
+
+        var map;
+        var hash;
+        var userLocationLayer = null;
+        
+        window.addEventListener('DOMContentLoaded', function(e) {
+            map = L.map('map', {
+                layers: [Thunderforest_Transport, layers[0].group],
+                center: [48.8654,2.3370],
+                zoom: 12,
+                loadingControl: true
+            });
+            
+            map.addControl(new informationControl());
+
+            var overlays = {};
+            layers.forEach(function(layer){
+                overlays[layer.title] = layer.group;
+            });
+            map.addControl(L.control.layers({"OSM Transport": Thunderforest_Transport}, overlays, {
+                collapsed: false    
+            }));
+            
+			L.geoJson(lignec, {
+				style: lignes,
+				clickable: false
+			}).addTo(map);
+			
+            hash = L.hash(map);
+
+            map.on('overlayadd', askForPlots);
+    
+            map.on('locationfound', function(e){
+//                console.log('LocationFound', e);
+                userLocation = e;
+    			var radius = e.accuracy / 2;
+    //			L.marker(e.latlng).addTo(map)
+    //				.bindPopup("Vous êtes dans un rayon de " + radius + " m.").openPopup();
+                if (userLocationLayer != null) {
+                    map.removeLayer(userLocationLayer);
+                }
+    			userLocationLayer = L.circle(e.latlng, radius).addTo(map);
+            });
+    
+            map.locate({
+                watch: true,                // follow location
+                enableHighAccuracy: true    // using GPS
+            });
+
+            askForPlots();
+        
+        });
+
+
+
+/*
+Passer à photon.komoot.de avec autocomplétion
+
+        new L.Control.OSMGeocoder({    // https://github.com/k4r573n/leaflet-control-osm-geocoder
+        position: 'topleft',
+        text: 'Centrer',
+        email: 'noemail'
+        }).addTo(map);
+*/
+
+
+    </script>
+
+
+</body>
+</html>
