@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Ligne de vie</title>
+	<title>Lignes de vie</title>
 	<meta charset="utf-8" />
 	
 	<meta name="description" content="Test de recherche de POI autour des gares d'Île-de-France"/>
-	<link rel="canonical" href="http://www.aureliesurlocean.fr/test/lignes" />
-	<meta property="og:title" content="Votre ligne de vie" />
+	<link rel="canonical" href="http://pingolin.github.io" />
+	<meta property="og:title" content="Lignes de vie" />
 	<meta property="og:description" content="Test de recherche de POI autour des gares d'Île-de-France" />
-	<meta property="og:url" content="http://www.aureliesurlocean.fr/test/lignes" />
+	<meta property="og:url" content="http://pingolin.github.io" />
 	<meta property="og:site_name" content="Ligne de vie" />
 	<meta property="og:image" content="xxx" />
 
@@ -102,18 +102,22 @@
                     console.log(map);
                     map.fire('modal', {
                         content: '                                              \
-<h1>Votre ligne de vie</h1>                                        \
+<h1>lignesdevie</h1>                                        \
                                                                                 \
 <img src="xxx" alt="Ligne de Vie"                   \
 style="float:right"/>                                                           \
                                                                                 \
-<p>Cherchez des services et équipements autour de vos gares et lignes de        \
-transport en commun préférées.                                                  \
+<p>Tests d\'une carto des services et équipements autour des gares d\'Île-de-France.<br>\
+L\'idée part d\'un besoin de trouver si des piscines existaient le long d\'un trajet de RER C.<br>\
+Le projet se base aussi sur la cartographie OpenStreetMap des gares de Transilien dont <a href="http://wiki.openstreetmap.org/wiki/FR:Railway_stations">le référentiel a été partagé sur le wiki OSM</a>    \
                                                                                 \
 <p>Piscine, crèches, etc. Cherchez et trouvez des services sur votre trajet     \
 habituel. N\'utilise que les objets cartographié dans <a href="http://www.openstreetmap.org">OpenStreetMap</a>.</p> \
                                                                                 \
-<p>Ce projet est encore en test et évoluera en fonction des retours et de mon temps\
+<h2>To Do</h2>\
+- Ajouter des contrôles dynamiques : slider pour la distance, choix des lignes, liste d\'équipements et services,...\
+- Ajouter le tracé en couleur des autres lignes que C (export geojson)\
+- Améliorer l\'appel Overpass (très long actuellement)\
 ',
 						closeTitle: 'fermer'
                     });
