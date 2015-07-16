@@ -15,9 +15,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="css/leaflet.css" />
     <script src="js/leaflet.js"></script>
-	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <!-- Librairies externes -->
-	<script src="js/SliderControl.js"></script>
+<!-- <script src="js/SliderControl.js"></script>-->
     <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-hash/v0.2.1/leaflet-hash.js'></script>
     <link rel="stylesheet" href="css/leaflet.modal.min.css" />
     <script type="text/javascript" src="js/Leaflet.Modal.min.js"></script>
@@ -41,13 +43,8 @@
 		}
     </style>
 
-
-</head>
-<body>
-
-    <div id="map"></div>
-
-    <script>
+ <!-- Contenu de la carte -->
+ <script>
 
 /**
  * This is a method of the L.Polygon object which returns the position of the 
@@ -78,7 +75,40 @@
                 y / f + off.lng
             );
         }
+/**
+ * Ajout Slider.
 
+var RadiusSliderControl = L.Control.extend({
+	options: {
+		position: 'topright'
+	},	
+	onAdd: function (map) {
+		var sliderContainer = L.DomUtil.create('div', 'class-slider leaflet-bar leaflet-control leaflet-control-custom');
+		    options = this.options;
+			sliderContainer.style.backgroundColor = 'white';
+			sliderContainer.style.width = '100%';
+			sliderContainer.style.height = '30px';
+			$(sliderContainer).append('<div id="slider">Ci gît un slider qui ne veut pas s\'afficher</div>');
+			//Prevent map panning/zooming while using the slider
+			$(sliderContainer).mousedown(function () {
+				map.dragging.disable();
+			});
+			$(document).mouseup(function () {
+				map.dragging.enable();
+			});
+			this.radiusSlider();
+			return sliderContainer;
+	},
+		radiusSlider: function() {
+		$("#slider").slider({
+				value:300,
+				min: 0,
+				max: 800,
+				step: 50
+				});
+	},	
+});
+ */ 
 /**
  * Instance of "i" control which show some informations.
  */ 
@@ -281,7 +311,11 @@ var Thunderforest_Transport = L.tileLayer('http://{s}.tile.thunderforest.com/tra
             });
             
             map.addControl(new informationControl());
-
+			
+			/// Début ajout Slider
+			/// map.addControl(new RadiusSliderControl());	
+			/// Fin ajout Slider
+			
             var overlays = {};
             layers.forEach(function(layer){
                 overlays[layer.title] = layer.group;
@@ -334,6 +368,10 @@ Passer à photon.komoot.de avec autocomplétion
 
 
     </script>
+</head>
+<body>
+
+    <div id="map"></div>
 
 
 </body>
