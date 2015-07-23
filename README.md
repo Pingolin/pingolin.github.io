@@ -12,10 +12,9 @@ Après quelques tests avec des bbox, j'ai choisi de faire une seule fois l'appel
 
 La requêtes est sous la forme :
 
-    {{geocodeArea:Île-de-France}}->.searchArea;
-    rel["line:SNCF"="C"](area.searchArea);
-    node(around:800)[sport=swimming](area.searchArea);
+    rel["line:SNCF"="C"]["public_transport"="stop_area"];
+    node(around:800)[sport=swimming];
     out body qt;
-    rel["line:SNCF"~"C"](area.searchArea);
-    way(around:800)[sport=swimming](area.searchArea);
+    rel["line:SNCF"~"C"]["public_transport"="stop_area"];
+    way(around:800)[sport=swimming];
     out center qt;
