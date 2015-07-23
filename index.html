@@ -226,16 +226,16 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
                 
                 map.fireEvent('dataloading'); 
 
-                var url = "http://overpass-api.de/api/interpreter?data=[out:json];area(3600008649)->.searchArea;";
-				var urla = "rel[\"line:SNCF\"~" + layer.ligne +"](area.searchArea);";
+                var url = "http://overpass-api.de/api/interpreter?data=[out:json];";
+		var urla = "rel[\"line:SNCF\"~" + layer.ligne +"];";
                 if (typeof layer.request == "object") {
                     layer.request.forEach(function(req){
-                    url += urla + "node(around:800)[" + req + "](area.searchArea);out qt;";
-					url += urla + "way(around:800)[" + req + "](area.searchArea);";
+                    url += urla + "node(around:800)[" + req + "][\"access\"!~\"private|no\"];out qt;";
+		    url += urla + "way(around:800)[" + req + "][\"access\"!~\"private|no\"];";
                     });
                 } else {
-                    url += urla + "node(around:800)[" + layer.request + "](area.searchArea);out qt;";
-					url += urla + "way(around:800)[" + layer.request + "](area.searchArea);";
+                    url += urla + "node(around:800)[" + layer.request + "][\"access\"!~\"private|no\"];out qt;";
+		    url += urla + "way(around:800)[" + layer.request + "][\"access\"!~\"private|no\"];";
                 }
                 url += "out center qt;";
                           
