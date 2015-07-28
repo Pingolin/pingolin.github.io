@@ -1,4 +1,4 @@
-{
+var ligneD = {
 	"type" : "FeatureCollection",
 	    "properties":{
                 "ligne_ID":"RERD",
@@ -3985,3 +3985,4 @@
 		}
 	]
 }
+;

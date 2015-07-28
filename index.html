@@ -30,9 +30,23 @@
 <!-- Include the loading control -->
     <link rel="stylesheet" href="css/Control.Loading.css" />
     <script src="js/Control.Loading.js"></script>
-    <script type="text/javascript" src="js/geojson/lignesSNCF.geojson"></script>  
-    <script src="js/leaflet.geometryutil.js"></script>
-
+	<script src="js/leaflet.geometryutil.js"></script>
+<!-- Tous les fichiers JSON -->
+    <script type="text/javascript" src="js/geojson/A.geojson"></script>  
+<script type="text/javascript" src="js/geojson/B.geojson"></script> 
+<script type="text/javascript" src="js/geojson/C.geojson"></script> 
+<script type="text/javascript" src="js/geojson/D.geojson"></script> 
+<script type="text/javascript" src="js/geojson/E.geojson"></script> 
+<script type="text/javascript" src="js/geojson/H.geojson"></script> 
+<script type="text/javascript" src="js/geojson/J.geojson"></script> 
+<script type="text/javascript" src="js/geojson/K.geojson"></script> 
+<script type="text/javascript" src="js/geojson/L.geojson"></script> 
+<script type="text/javascript" src="js/geojson/N.geojson"></script> 
+<script type="text/javascript" src="js/geojson/P.geojson"></script> 
+<script type="text/javascript" src="js/geojson/R.geojson"></script> 
+<script type="text/javascript" src="js/geojson/U.geojson"></script> 
+<script type="text/javascript" src="js/geojson/T4.geojson"></script> 
+<!-- Fin des chargements de scripts -->
     <style>
 		body {
 			padding: 0;
@@ -288,7 +302,7 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
 		});
 */
 var stylelignes = {
-    "color": lignes.properties.ligne_couleur,
+    "color": .properties.ligne_couleur,
     "weight": 6,
     "opacity": 0.9,
 };
@@ -324,7 +338,7 @@ var Thunderforest_Transport = L.tileLayer('http://{s}.tile.thunderforest.com/tra
                 collapsed: false    
             }));
             
-			L.geoJson(lignes, {
+			L.geoJson(ligneB, {
 				style: stylelignes,
 				clickable: false
 			}).addTo(map);
