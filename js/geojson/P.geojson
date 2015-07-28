@@ -1,11 +1,11 @@
-{
+var ligneP = {
 	"type" : "FeatureCollection",
-	"properties":{
-                "ligne_ID":"TRAP",
-                "ligne_nom":"P",
-                "ligne_couleur":"#E3E3E3",
-                "mode":"TRAIN",
-            },
+	"properties" : {
+		"ligne_ID" : "TRAP",
+		"ligne_nom" : "P",
+		"ligne_couleur" : "#F0B600",
+		"mode" : "TRAIN",
+	},
 	"crs" : {
 		"type" : "name",
 		"properties" : {

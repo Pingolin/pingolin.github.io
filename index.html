@@ -35,7 +35,7 @@
     <script type="text/javascript" src="js/geojson/A.geojson"></script>  
 <script type="text/javascript" src="js/geojson/B.geojson"></script> 
 <script type="text/javascript" src="js/geojson/C.geojson"></script> 
-<script type="text/javascript" src="js/geojson/D.geojson"></script> 
+<script type="text/javascript" src="js/geojson/D.geojson"></script>
 <script type="text/javascript" src="js/geojson/E.geojson"></script> 
 <script type="text/javascript" src="js/geojson/H.geojson"></script> 
 <script type="text/javascript" src="js/geojson/J.geojson"></script> 
@@ -44,8 +44,9 @@
 <script type="text/javascript" src="js/geojson/N.geojson"></script> 
 <script type="text/javascript" src="js/geojson/P.geojson"></script> 
 <script type="text/javascript" src="js/geojson/R.geojson"></script> 
-<script type="text/javascript" src="js/geojson/U.geojson"></script> 
-<script type="text/javascript" src="js/geojson/T4.geojson"></script> 
+<script type="text/javascript" src="js/geojson/U.geojson"></script>
+<script type="text/javascript" src="js/geojson/T4.geojson"></script>
+
 <!-- Fin des chargements de scripts -->
     <style>
 		body {
@@ -301,11 +302,7 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
 			id: 'examples.map-i875mjb7'
 		});
 */
-var stylelignes = {
-    "color": .properties.ligne_couleur,
-    "weight": 6,
-    "opacity": 0.9,
-};
+
 
 var Thunderforest_Transport = L.tileLayer('http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -338,16 +335,27 @@ var Thunderforest_Transport = L.tileLayer('http://{s}.tile.thunderforest.com/tra
                 collapsed: false    
             }));
             
-			L.geoJson(ligneB, {
-				style: stylelignes,
-				clickable: false
-			}).addTo(map);
+			listeligne = [ligneA, ligneB, ligneC, ligneD, ligneE, ligneH, ligneJ, ligneK, ligneL, ligneN, ligneP, ligneR, ligneU, ligneT4];
+			
+			function AffichLigne(element, index, array) {
+				console.log(listeligne[index]);
+				stylelignes = {
+				"color": listeligne[index].properties.ligne_couleur,
+				"weight": 6,
+				"opacity": 0.3,
+				};
+				L.geoJson(listeligne[index], {
+					style: stylelignes,
+					clickable: false
+			}).addTo(map);};
+			
+			listeligne.forEach(AffichLigne);
 			
             hash = L.hash(map);
 
             map.on('overlayadd', askForPlots);
     
-            map.on('locationfound', function(e){
+/*           map.on('locationfound', function(e){
 //                console.log('LocationFound', e);
                 userLocation = e;
     			var radius = e.accuracy / 2;
@@ -364,7 +372,7 @@ var Thunderforest_Transport = L.tileLayer('http://{s}.tile.thunderforest.com/tra
                 enableHighAccuracy: true    // using GPS
             });
 
-            askForPlots();
+            askForPlots(); */
         
         });
 

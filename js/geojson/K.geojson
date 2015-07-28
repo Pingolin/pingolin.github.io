@@ -1,4 +1,4 @@
-{
+var ligneK = {
 	"type" : "FeatureCollection",
     "properties":{
                 "ligne_ID":"TRAK",
@@ -889,3 +889,4 @@
 		}
 	]
 }
+;

@@ -1,4 +1,4 @@
-{
+var ligneN = {
 	"type" : "FeatureCollection",
 	"properties" : {
 		"ligne_ID" : "TRAN",
@@ -2419,3 +2419,4 @@
 		}
 	]
 }
+;

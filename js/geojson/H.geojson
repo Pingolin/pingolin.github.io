@@ -1,4 +1,4 @@
-{
+var ligneH = {
 	"type" : "FeatureCollection",
 	"properties" : {
 		"ligne_ID" : "TRAH",
@@ -2725,3 +2725,4 @@
 		}
 	]
 }
+;

@@ -1,9 +1,9 @@
-{
+var ligneE = {
 	"type" : "FeatureCollection",
 	"properties" : {
 		"ligne_ID" : "RERE",
 		"ligne_nom" : "E",
-		"ligne_couleur" : "#D582B1",
+		"ligne_couleur" : "#df77b2",
 		"mode" : "RER",
 	},
 	"crs" : {
@@ -1104,4 +1104,4 @@
 			}
 		}
 	]
-}
+};
