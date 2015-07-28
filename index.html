@@ -311,7 +311,6 @@ var Thunderforest_Transport = L.tileLayer('http://{s}.tile.thunderforest.com/tra
 
         var map;
         var hash;
-        var userLocationLayer = null;
         
         window.addEventListener('DOMContentLoaded', function(e) {
             map = L.map('map', {
@@ -338,7 +337,6 @@ var Thunderforest_Transport = L.tileLayer('http://{s}.tile.thunderforest.com/tra
 			listeligne = [ligneA, ligneB, ligneC, ligneD, ligneE, ligneH, ligneJ, ligneK, ligneL, ligneN, ligneP, ligneR, ligneU, ligneT4];
 			
 			function AffichLigne(element, index, array) {
-				console.log(listeligne[index]);
 				stylelignes = {
 				"color": listeligne[index].properties.ligne_couleur,
 				"weight": 6,
@@ -371,8 +369,8 @@ var Thunderforest_Transport = L.tileLayer('http://{s}.tile.thunderforest.com/tra
                 watch: true,                // follow location
                 enableHighAccuracy: true    // using GPS
             });
-
-            askForPlots(); */
+*/
+            askForPlots(); 
         
         });
 
