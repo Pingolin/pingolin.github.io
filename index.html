@@ -30,7 +30,7 @@
 <!-- Include the loading control -->
     <link rel="stylesheet" href="css/Control.Loading.css" />
     <script src="js/Control.Loading.js"></script>
-    <script type="text/javascript" src="js/c.geojson"></script>  
+    <script type="text/javascript" src="js/geojson/lignesSNCF.geojson"></script>  
     <script src="js/leaflet.geometryutil.js"></script>
 
     <style>
@@ -287,8 +287,8 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
 			id: 'examples.map-i875mjb7'
 		});
 */
-var lignes = {
-    "color": lignec.properties.ligne_couleur,
+var stylelignes = {
+    "color": lignes.properties.ligne_couleur,
     "weight": 6,
     "opacity": 0.9,
 };
@@ -324,8 +324,8 @@ var Thunderforest_Transport = L.tileLayer('http://{s}.tile.thunderforest.com/tra
                 collapsed: false    
             }));
             
-			L.geoJson(lignec, {
-				style: lignes,
+			L.geoJson(lignes, {
+				style: stylelignes,
 				clickable: false
 			}).addTo(map);
 			
