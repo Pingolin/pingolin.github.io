@@ -228,8 +228,8 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
             		if (this.tags.wikipedia) {
             			t += '- <a href="http://en.wikipedia.org/wiki/'+ this.tags.wikipedia + '">Page Wikipedia</a><br/><br/>';
             		};
-			t += 'Une erreur ? <a href="http://www.openstreetmap.org/edit?' + this.type + 
-                    '=' + this.id + '" target="_blank"> Éditer l\'objet sur OpenStreetMap</a><br/><br/>Tags de l\'objet :<ul>';
+			t += 'Une erreur ? <a href="http://www.openstreetmap.org/' + this.type + 
+                    '/' + this.id + '" target="_blank"> Éditer l\'objet sur OpenStreetMap</a><br/><br/>Tags de l\'objet :<ul>';
             for(var key in this.tags) {
                 if (this.tags.hasOwnProperty(key)) {
                     t += "<li>" + key + " = '" + this.tags[key] + "'</li>";
