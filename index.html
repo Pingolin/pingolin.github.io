@@ -219,10 +219,12 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
  **/  
         function onClick(event) {
             var t ='<H3>' + this.tags.name + '</H3>';
-			t += (this.type == "node" ? "Node" : "Way") + 
-                    ' <a href="http://www.openstreetmap.org/' + this.type + 
-                    '/' + this.id + '" target="_blank">#' + this.id + 
-                    "</a> with tags:<ul>";
+            		if (this.tags.hasOwnProperty(website)) {
+            			t += '<a href="'this.tags.website'">Site Internet</a>';
+            		};
+			t += 'Une erreur ? <a href="http://www.openstreetmap.org/edit?' + this.type + 
+                    '=' + this.id + '" target="_blank"> Éditer l\'objet' + this.id + 'sur OpenStreetMap</a>' 
+                    "Tags de l\'objet :<ul>";
             for(var key in this.tags) {
                 if (this.tags.hasOwnProperty(key)) {
                     t += "<li>" + key + " = '" + this.tags[key] + "'</li>";
