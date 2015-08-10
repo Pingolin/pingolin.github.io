@@ -268,15 +268,14 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
                 var url = "http://overpass-api.de/api/interpreter?data=[out:json];";
 		var urla = "rel[\"line:SNCF\"~" + layer.ligne +"] -> .r;(";
 		var restrict = "[\"access\"!~\"private|no\"];";
-		var disturl = layer.distance;
                 if (typeof layer.request == "object") {
                     layer.request.forEach(function(req){
-                    url += urla + "node(around.r:" + disturl + ")[" + req + "]" + restrict;
-		    url += "way(around.r:" + disturl + ")[" + req + "]" + restrict;
+                    url += urla + "node(around.r:" + layer.distance + ")[" + req + "]" + restrict;
+		    url += "way(around.r:" + layer.distance + ")[" + req + "]" + restrict;
                     });
                 } else {
-                    url += urla + "node(around.r:" + disturl + ")[" + layer.request + "]" + restrict;
-		    url += "way(around.r:" + disturl + ")[" + layer.request + "]" + restrict;
+                    url += urla + "node(around.r:" + layer.distance + ")[" + layer.request + "]" + restrict;
+		    url += "way(around.r:" + layer.distance + ")[" + layer.request + "]" + restrict;
                 }
                 url += ");out center qt;";
                           
