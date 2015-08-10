@@ -178,42 +178,42 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
 			title: "Piscines à 800m d'une gare ligne C",
 			request:'"sport"~"swimming"',
 			ligne:'"C"',
+			distance: '800',
 			group: L.featureGroup(), 
 			icon: L.AwesomeMarkers.icon({
                 	icon: 'life-ring',
 			markerColor: 'blue',
-			distance: '800'
 			})
 		},{
 			title: "Piscines à 800m d'une gare ligne N",
 			request:'"sport"~"swimming"',
 			ligne:'"N"',
-			group: L.featureGroup(), 
+			distance: '800',
+			group: L.featureGroup(),
 			icon: L.AwesomeMarkers.icon({
                 	icon: 'life-ring',
 			markerColor: 'blue',
-			distance: '800'
 			})
 		},{
 			title: "Court de tennis à 300m d'une gare ligne C",
 			request:'"sport"~"tennis"',
 			ligne:'"C"',
+			distance: '300',
 			group: L.featureGroup(), 
 			icon: L.AwesomeMarkers.icon({
                 	icon: 'circle',
-			markerColor: 'orange',
+			markerColor: 'white',
 			iconColor: '#C6ED2C',
-			distance: '300'
 			})
 		}, {
 			title: "Creche à 500m d'une gare ligne C",
 			request:'"amenity"~"kindergarten|childcare"',
 			ligne:'"C"',
+			distance: '500',
 			group: L.featureGroup(), 
 			icon: L.AwesomeMarkers.icon({
                 	icon: 'child',
 			markerColor: 'red',
-			distance: '500'
 			})
 		}];
 
@@ -265,17 +265,18 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
                 
                 map.fireEvent('dataloading'); 
 
+		var disturl = layer.distance;
                 var url = "http://overpass-api.de/api/interpreter?data=[out:json];";
 		var urla = "rel[\"line:SNCF\"~" + layer.ligne +"] -> .r;(";
 		var restrict = "[\"access\"!~\"private|no\"];";
                 if (typeof layer.request == "object") {
                     layer.request.forEach(function(req){
-                    url += urla + "node(around.r:" + layer.distance + ")[" + req + "]" + restrict;
-		    url += "way(around.r:" + layer.distance + ")[" + req + "]" + restrict;
+                    url += urla + "node(around.r:" + disturl + ")[" + req + "]" + restrict;
+		    url += "way(around.r:" + disturl + ")[" + req + "]" + restrict;
                     });
                 } else {
-                    url += urla + "node(around.r:" + layer.distance + ")[" + layer.request + "]" + restrict;
-		    url += "way(around.r:" + layer.distance + ")[" + layer.request + "]" + restrict;
+                    url += urla + "node(around.r:" + disturl + ")[" + layer.request + "]" + restrict;
+		    url += "way(around.r:" + disturl + ")[" + layer.request + "]" + restrict;
                 }
                 url += ");out center qt;";
                           
