@@ -176,7 +176,7 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
 	L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa'; 
 	var layers = [{
 			title: "Piscines à 800m d'une gare ligne C",
-			request:'"sport"="swimming"',
+			request:'"sport"~"swimming"',
 			ligne:'"C"',
 			group: L.featureGroup(), 
 			icon: L.AwesomeMarkers.icon({
@@ -189,17 +189,17 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
 			ligne:'"N"',
 			group: L.featureGroup(), 
 			icon: L.AwesomeMarkers.icon({
-                icon: 'life-ring',
-				markerColor: 'blue'
+                	icon: 'life-ring',
+			markerColor: 'blue'
 			})
 		},{
-			title: "Tennis à 800m d'une gare ligne C",
+			title: "Court de tennis à 800m d'une gare ligne C",
 			request:'"sport"~"tennis"',
 			ligne:'"C"',
 			group: L.featureGroup(), 
 			icon: L.AwesomeMarkers.icon({
-                icon: 'circle',
-				markerColor: 'green'
+                	icon: 'circle',
+			markerColor: 'yellow'
 			})
 		}, {
 			title: "Creche à 800m d'une gare ligne C",
@@ -207,8 +207,8 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
 			ligne:'"C"',
 			group: L.featureGroup(), 
 			icon: L.AwesomeMarkers.icon({
-                icon: 'child',
-				markerColor: 'red'
+                	icon: 'child',
+			markerColor: 'red'
 			})
 		}];
 
@@ -261,17 +261,18 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
                 map.fireEvent('dataloading'); 
 
                 var url = "http://overpass-api.de/api/interpreter?data=[out:json];";
-		var urla = "rel[\"line:SNCF\"~" + layer.ligne +"];";
+		var urla = "rel[\"line:SNCF\"~" + layer.ligne +"] -> .r;(";
+		var restrict = "[\"access\"!~\"private|no\"];";
                 if (typeof layer.request == "object") {
                     layer.request.forEach(function(req){
-                    url += urla + "node(around:800)[" + req + "][\"access\"!~\"private|no\"];out qt;";
-		    url += urla + "way(around:800)[" + req + "][\"access\"!~\"private|no\"];";
+                    url += urla + "node(around.r:800)[" + req + "]" + restrict;
+		    url += "way(around.r:800)[" + req + "]" + restrict;
                     });
                 } else {
-                    url += urla + "node(around:800)[" + layer.request + "][\"access\"!~\"private|no\"];out qt;";
-		    url += urla + "way(around:800)[" + layer.request + "][\"access\"!~\"private|no\"];";
+                    url += urla + "node(around.r:800)[" + layer.request + "]" + restrict;
+		    url += "way(around.r:800)[" + layer.request + "]" + restrict;
                 }
-                url += "out center qt;";
+                url += ");out center qt;";
                           
                 $.getJSON(url, function(feature){
                     var nodes = [];
@@ -290,7 +291,7 @@ Tout le code est sur Github : <a href="https://github.com/Pingolin/pingolin.gith
                                 }
                                 break;
                             case 'way':
-								ways[elem.id] = L.latLng(elem.center.lat, elem.center.lon);
+				ways[elem.id] = L.latLng(elem.center.lat, elem.center.lon);
                                 if ('tags' in elem) {
                                     layer.group.addLayer(L.marker(L.latLng(elem.center.lat, elem.center.lon), {
                                         icon: layer.icon
